@@ -1,7 +1,5 @@
 import Controller from "@ember/controller";
-import { inject } from "@ember/controller";
 import discourseComputed from "discourse-common/utils/decorators";
-import { alias, readOnly, equal } from "@ember/object/computed";
 import { on } from "discourse-common/utils/decorators";
 import KnowledgeExplorer from "discourse/plugins/discourse-knowledge-explorer/discourse/models/knowledge-explorer";
 import { getOwner } from "@ember/application";
@@ -16,14 +14,14 @@ export default Controller.extend({
     searchTerm: "search",
     selectedTopic: "topic",
   },
-  application: inject(),
+  application: Ember.inject.controller(),
   isLoading: false,
   isLoadingMore: false,
-  loadMoreUrl: alias("model.topics.load_more_url"),
+  loadMoreUrl: Ember.computed.alias("model.topics.load_more_url"),
   isTopicLoading: false,
-  categories: readOnly("model.categories"),
-  topics: alias("model.topics.topic_list.topics"),
-  tags: readOnly("model.tags"),
+  categories: Ember.computed.readOnly("model.categories"),
+  topics: Ember.computed.alias("model.topics.topic_list.topics"),
+  tags: Ember.computed.readOnly("model.tags"),
   filterTags: null,
   filterCategories: null,
   filterSolved: false,
@@ -33,7 +31,7 @@ export default Controller.extend({
   expandedFilters: false,
   ascending: null,
   orderColumn: null,
-  topicCount: alias("model.topic_count"),
+  topicCount: Ember.computed.alias("model.topic_count"),
 
   @on("init")
   _setupFilters() {
@@ -63,7 +61,7 @@ export default Controller.extend({
     return isSearching || filterSolved;
   },
 
-  emptyResults: equal("topicCount", 0),
+  emptyResults: Ember.computed.equal("topicCount", 0),
 
   @discourseComputed
   canFilterSolved() {
